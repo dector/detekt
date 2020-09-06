@@ -462,6 +462,28 @@ class Parser {
 }
 ```
 
+### LibraryEntitiesShouldNotBePublic
+
+Library typealias and classes should be internal or private.
+
+**Severity**: Style
+
+**Debt**: 5min
+
+#### Noncompliant Code:
+
+```kotlin
+// code from a library
+class A
+```
+
+#### Compliant Code:
+
+```kotlin
+// code from a library
+internal class A
+```
+
 ### LoopWithTooManyJumpStatements
 
 Loops which contain multiple `break` or `continue` statements are hard to read and understand.
@@ -1288,7 +1310,7 @@ a.let { it.plus(1) } // can be replaced with `a.plus(1)`
 a?.let { it.plus(1) } // can be replaced with `a?.plus(1)`
 a?.let { that -> that.plus(1) }?.let { it.plus(1) } // can be replaced with `a?.plus(1)?.plus(1)`
 a.let { 1.plus(1) } // can be replaced with `1.plus(1)`
-a?.let { 1.plus(1) } // can be replaced with `if (a == null) 1.plus(1)`
+a?.let { 1.plus(1) } // can be replaced with `if (a != null) 1.plus(1)`
 ```
 
 #### Compliant Code:
@@ -1585,6 +1607,7 @@ Rule adapted from Kotlin's IntelliJ plugin: https://github.com/JetBrains/kotlin/
 ```kotlin
 val testList = listOf("string").orEmpty()
 val testList2 = listOf("string").orEmpty().map { _ }
+val testList3 = listOfNotNull("string")
 val testString = ""?.isNullOrBlank()
 ```
 
@@ -1593,6 +1616,7 @@ val testString = ""?.isNullOrBlank()
 ```kotlin
 val testList = listOf("string")
 val testList2 = listOf("string").map { }
+val testList3 = listOf("string")
 val testString = ""?.isBlank()
 ```
 
