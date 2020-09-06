@@ -13,6 +13,7 @@ include(
     "detekt-report-html",
     "detekt-report-txt",
     "detekt-report-xml",
+    "detekt-report-sarif",
     "detekt-rules",
     "detekt-rules-complexity",
     "detekt-rules-coroutines",
