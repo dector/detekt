@@ -56,7 +56,40 @@ class SarifOutputFormatSpec : Spek({
             val result = outputFormat.render(TestDetektion(smell))
 
             assertThat(result).isEqualTo("""
-                |
+                |{
+                |  "version": "2.1.0",
+                |  "runs": [
+                |    {
+                |      "tool": {
+                |        "driver": {
+                |          "name": "Detekt"
+                |        }
+                |      },
+                |      "results": [
+                |        {
+                |          "ruleId": "id_a",
+                |          "message": {
+                |            "text": ""
+                |          },
+                |          "locations": [
+                |            {
+                |              "physicalLocation": {
+                |                "artifactLocation": {
+                |                  "uri": "file://src/main/com/sample/Sample1.kt",
+                |                  "index": 0
+                |                }
+                |              },
+                |              "region": {
+                |                "startLine": 11,
+                |                "startColumn": 1
+                |              }
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  ]
+                |}
             """.trimMargin())
         }
 

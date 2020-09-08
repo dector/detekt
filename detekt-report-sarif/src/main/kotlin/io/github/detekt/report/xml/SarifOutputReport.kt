@@ -19,6 +19,30 @@ class SarifOutputReport : OutputReport() {
     override fun render(detektion: Detektion): String {
         val sarif = JsonObject()
 
+        val results = JsonArray()
+        detektion.findings.flatMap { it.value }.forEach { finding ->
+            results.add(JsonObject().apply {
+                set("ruleId", finding.id)
+                set("message", JsonObject().set("text", finding.messageOrDescription()))
+
+                val location = JsonObject()
+                    .set(
+                        "physicalLocation", JsonObject()
+                            .set(
+                                "artifactLocation", JsonObject()
+                                    .set("uri", "file://${finding.location.file}")
+                                    .set("index", 0)
+                            )
+                    )
+                    .set(
+                        "region", JsonObject()
+                            .set("startLine", finding.location.source.line)
+                            .set("startColumn", finding.location.source.column)
+                    )
+                set("locations", JsonArray().add(location))
+            })
+        }
+
         sarif.set("version", "2.1.0")
         sarif.set("runs", JsonArray().also { runs ->
             val run = JsonObject()
@@ -27,7 +51,7 @@ class SarifOutputReport : OutputReport() {
                     driver.set("name", "Detekt")
                 })
             })
-            run.set("results", JsonArray())
+            run.set("results", results)
 
             runs.add(run)
         })
